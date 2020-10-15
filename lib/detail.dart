@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/model/Film.dart';
+import 'package:flutter_app/model/TvShows.dart';
 
 class StarDisplay extends StatelessWidget {
   final int value;
@@ -23,8 +24,9 @@ class StarDisplay extends StatelessWidget {
 
 class Detail extends StatelessWidget {
   final Result film;
+  final ResultShow show;
 
-   Detail({Key key, this.film}) : super(key: key);
+   Detail({Key key, this.film, this.show}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +50,7 @@ class Detail extends StatelessWidget {
                     width: MediaQuery.of(context).size.width,
                     decoration: new BoxDecoration(
                         image: DecorationImage(
-                          image: NetworkImage("http://image.tmdb.org/t/p/w1280/${film.posterPath}"),
+                          image: NetworkImage("http://image.tmdb.org/t/p/w1280/${film == null ? show.posterPath :  film.posterPath }"),
                           fit: BoxFit.cover,
                         ))),
                 Container(
@@ -66,7 +68,7 @@ class Detail extends StatelessWidget {
                     ),
                   ),
                   child: Text(
-                   film.title,
+                   film == null ? show.originalName : film.title,
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 25.0,
@@ -82,14 +84,14 @@ class Detail extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    film.popularity.toString(),
+                    film == null ? show.popularity.toString() : film.popularity.toString() ,
                     style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
                         color: Colors.white),
                   ),
                   Text(
-                    film.releaseDate.year.toString(),
+                  film == null ? show.name : film.releaseDate.toString(),
                     style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
@@ -103,7 +105,7 @@ class Detail extends StatelessWidget {
                     child: StarDisplay(value: 3),
                   ),
                   Text(
-                    film.popularity.toString(),
+                    film == null ? show.popularity.toString() : film.popularity.toString() ,
                     style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
@@ -123,7 +125,7 @@ class Detail extends StatelessWidget {
                     disabledTextColor: Colors.black,
                     padding: EdgeInsets.all(2.0),
                     child: Text(
-                      film.genreIds[0].toString(),
+                      film == null ? show.genreIds[0].toString(): film.genreIds[0].toString(),
                     ),
                   ),
                   FlatButton(
@@ -133,7 +135,7 @@ class Detail extends StatelessWidget {
                     disabledTextColor: Colors.black,
                     padding: EdgeInsets.all(7.0),
                     child: Text(
-                      film.genreIds[0].toString(),
+                        film == null ? show.genreIds[0].toString(): film.genreIds[0].toString()
                     ),
                   ),
                   FlatButton(
@@ -143,7 +145,7 @@ class Detail extends StatelessWidget {
                     disabledTextColor: Colors.black,
                     padding: EdgeInsets.all(7.0),
                     child: Text(
-                      film.genreIds[0].toString(),
+                        film == null ? show.genreIds[0].toString(): film.genreIds[0].toString()
                     ),
                   )
                 ]),
@@ -156,7 +158,7 @@ class Detail extends StatelessWidget {
                           text: 'Cast :',
                           style: TextStyle(fontWeight: FontWeight.bold)),
                       TextSpan(
-                          text: film.overview),
+                          text: film == null ? show.overview : film.overview),
                     ],
                   ),
                 ),
@@ -183,7 +185,7 @@ class Detail extends StatelessWidget {
                     text: TextSpan(
                       children: <TextSpan>[
                         TextSpan(
-                            text: film.overview),
+                            text: film == null ? show.overview : film.overview),
                       ],
                     ),
                   ),

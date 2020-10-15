@@ -3,6 +3,7 @@
 //     final filmDetail = filmDetailFromJson(jsonString);
 
 import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 Future<FilmDetail> fetchFilmsDetails(String id) async{
   final url = "https://api.themoviedb.org/3/movie/$id?api_key=62feaff3d2cf094a340f530fbf25bde9&language=en-US";
@@ -10,7 +11,7 @@ Future<FilmDetail> fetchFilmsDetails(String id) async{
   print(url);
   if (response.statusCode == 200) {
     print(response.body);
-    return Film.fromJson(jsonDecode(response.body));
+    return FilmDetail.fromJson(jsonDecode(response.body));
   }
   else
   {

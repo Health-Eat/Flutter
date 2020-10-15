@@ -29,26 +29,26 @@ class TvShows {
     this.page,
     this.totalResults,
     this.totalPages,
-    this.results,
+    this.resultsShow,
   });
 
   int page;
   int totalResults;
   int totalPages;
-  List<ResultShow> results;
+  List<ResultShow> resultsShow;
 
   factory TvShows.fromJson(Map<String, dynamic> json) => TvShows(
     page: json["page"],
     totalResults: json["total_results"],
     totalPages: json["total_pages"],
-    results: List<ResultShow>.from(json["results"].map((x) => ResultShow.fromJson(x))),
+    resultsShow: List<ResultShow>.from(json["results"].map((x) => ResultShow.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
     "page": page,
     "total_results": totalResults,
     "total_pages": totalPages,
-    "results": List<dynamic>.from(results.map((x) => x.toJson())),
+    "results": List<dynamic>.from(resultsShow.map((x) => x.toJson())),
   };
 }
 

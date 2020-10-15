@@ -8,7 +8,6 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.e
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   height: 210,
                   child: Stack(children: <Widget>[
                     Container(
-                      child: Text(title,
+                      child: Text("Popular TV Show",
                           style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
@@ -88,33 +87,35 @@ class _MyHomePageState extends State<MyHomePage> {
                             future: fetchShows(),
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
-                                return GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                Detail(film: snapshot.data.results[snapshot])),
-                                      );
-                                    },
-                                    child: Container(
+                                return Container(
                                         child: ListView.builder(
-                                            itemCount:
-                                                snapshot.data.results.length,
+                                            itemCount: snapshot.data.resultsShow.length,
                                             scrollDirection: Axis.horizontal,
-                                            itemBuilder: (BuildContext context,
-                                                int index) {
-                                              return Container(
-                                                height: 200,
-                                                width: 200,
-                                                decoration: new BoxDecoration(
-                                                    image: DecorationImage(
-                                                  image: NetworkImage(
-                                                      "http://image.tmdb.org/t/p/w500${snapshot.data.results[index].posterPath}"),
-                                                  fit: BoxFit.fitHeight,
-                                                )),
-                                              );
-                                            })));
+                                            itemBuilder:
+                                                (BuildContext context, int index) {
+                                              return GestureDetector(
+                                                  onTap: () {
+                                                    print(snapshot.data.resultsShow[index].posterPath);
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              Detail(
+                                                                film: null,
+                                                                  show: snapshot.data.resultsShow[index])),
+                                                    );
+                                                  },
+                                                  child: Container(
+                                                    height: 250,
+                                                    width: 200,
+                                                    decoration: new BoxDecoration(
+                                                        image: DecorationImage(
+                                                          image: NetworkImage(
+                                                              "http://image.tmdb.org/t/p/w500/${snapshot.data.resultsShow[index].posterPath}"),
+                                                          fit: BoxFit.fitHeight,
+                                                        )),
+                                                  ));
+                                            }));
                               } else if (snapshot.hasError) {
                                 return Text("${snapshot.error}",
                                     style: TextStyle(
