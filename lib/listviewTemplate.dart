@@ -26,11 +26,7 @@ class ListviewTemplate extends StatelessWidget {
               ),
               Padding(
                   padding: EdgeInsets.fromLTRB(0, 25, 0, 5),
-                  child: new GestureDetector(
-                      onTap: () {
-                        print("Container clicked");
-                      },
-                      child: Container(
+                  child: Container(
                         child: FutureBuilder<Film>(
                           future: fetchFilms(type),
                           builder: (context, snapshot) {
@@ -70,7 +66,7 @@ class ListviewTemplate extends StatelessWidget {
                             return CircularProgressIndicator();
                           },
                         ),
-                      )))
+                      ))
             ]))
       ])
     ]);

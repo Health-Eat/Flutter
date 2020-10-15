@@ -62,7 +62,8 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromRGBO(44, 55, 63, 0.4),
-      appBar: AppBar(
+      appBar:
+      AppBar(
         title: Text(title),
       ),
       body: Stack(children: <Widget>[
@@ -95,7 +96,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                                 (BuildContext context, int index) {
                                               return GestureDetector(
                                                   onTap: () {
-                                                    print(snapshot.data.resultsShow[index].posterPath);
                                                     Navigator.push(
                                                       context,
                                                       MaterialPageRoute(

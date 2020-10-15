@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/model/Film.dart';
 import 'package:flutter_app/model/TvShows.dart';
+import 'dart:convert' as convert;
+import 'package:http/http.dart' as http;
 
 class StarDisplay extends StatelessWidget {
   final int value;
@@ -22,11 +24,31 @@ class StarDisplay extends StatelessWidget {
   }
 }
 
+class Genre {
+  final int id;
+  final String name;
+
+  Genre({this.id, this.name});
+
+  factory Genre.fromJson(Map<String, dynamic> json) {
+    return Genre(id: json['id'] as int, name: json['name']);
+  }
+}
+
 class Detail extends StatelessWidget {
   final Result film;
   final ResultShow show;
 
-   Detail({Key key, this.film, this.show}) : super(key: key);
+  Future<List<Genre>> fetchGenres(String url) async {
+    var response = await http.get(url);
+    var jsonResponse = convert.jsonDecode(response.body);
+
+    return (jsonResponse['genres'] as List)
+        .map((p) => Genre.fromJson(p))
+        .toList();
+  }
+
+  Detail({Key key, this.film, this.show}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -50,9 +72,10 @@ class Detail extends StatelessWidget {
                     width: MediaQuery.of(context).size.width,
                     decoration: new BoxDecoration(
                         image: DecorationImage(
-                          image: NetworkImage("http://image.tmdb.org/t/p/w1280/${film == null ? show.posterPath :  film.posterPath }"),
-                          fit: BoxFit.cover,
-                        ))),
+                      image: NetworkImage(
+                          "http://image.tmdb.org/t/p/w1280/${film == null ? show.posterPath : film.posterPath}"),
+                      fit: BoxFit.cover,
+                    ))),
                 Container(
                   padding: EdgeInsets.all(5.0),
                   alignment: Alignment.bottomLeft,
@@ -68,7 +91,7 @@ class Detail extends StatelessWidget {
                     ),
                   ),
                   child: Text(
-                   film == null ? show.originalName : film.title,
+                    film == null ? show.originalName : film.title,
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 25.0,
@@ -84,14 +107,14 @@ class Detail extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    film == null ? show.popularity.toString() : film.popularity.toString() ,
+                    "+12 - ",
                     style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
                         color: Colors.white),
                   ),
                   Text(
-                  film == null ? show.name : film.releaseDate.toString(),
+                    " ${film == null ? show.name : film.releaseDate.year.toString()} - ",
                     style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
@@ -105,7 +128,7 @@ class Detail extends StatelessWidget {
                     child: StarDisplay(value: 3),
                   ),
                   Text(
-                    film == null ? show.popularity.toString() : film.popularity.toString() ,
+                    " ${film == null ? show.voteAverage.toString() : film.voteAverage.toString()}",
                     style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
@@ -118,7 +141,58 @@ class Detail extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  FlatButton(
+                  FutureBuilder<List<Genre>>(
+                      future: fetchGenres(
+                          'https://api.themoviedb.org/3/genre/movie/list?api_key=62feaff3d2cf094a340f530fbf25bde9&language=en-US'),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          var names = [];
+
+                          for (Genre genre in snapshot.data) {
+                            /*print("${film.genreIds[0]} --- ${genre.id}");*/
+                            for (var index = 0; index < 3; index++) {
+                              if (film.genreIds[index] == genre.id) {
+                                names.add(genre.name);
+                              }
+                            }
+                            print(names);
+                          }
+                          return Stack(children: [
+                            FlatButton(
+                              onPressed: null,
+                              textColor: Colors.white,
+                              disabledColor: Colors.white,
+                              disabledTextColor: Colors.black,
+                              padding: EdgeInsets.all(2.0),
+                              child: Text(names[0].toString(),
+                                  style: TextStyle(color: Colors.black)),
+                            ),
+                            FlatButton(
+                              onPressed: null,
+                              textColor: Colors.white,
+                              disabledColor: Colors.white,
+                              disabledTextColor: Colors.black,
+                              padding: EdgeInsets.all(2.0),
+                              child: Text(names[1].toString(),
+                                  style: TextStyle(color: Colors.black)),
+                            ),
+                            FlatButton(
+                              onPressed: null,
+                              textColor: Colors.white,
+                              disabledColor: Colors.white,
+                              disabledTextColor: Colors.black,
+                              padding: EdgeInsets.all(2.0),
+                              child: Text(names[2].toString(),
+                                  style: TextStyle(color: Colors.black)),
+                            )
+                          ]);
+                        }
+                        return Text(
+                          snapshot.error.toString(),
+                          style: TextStyle(color: Colors.red),
+                        );
+                      }),
+                  /* FlatButton(
                     onPressed: null,
                     textColor: Colors.white,
                     disabledColor: Colors.white,
@@ -147,7 +221,7 @@ class Detail extends StatelessWidget {
                     child: Text(
                         film == null ? show.genreIds[0].toString(): film.genreIds[0].toString()
                     ),
-                  )
+                  )*/
                 ]),
             Row(children: <Widget>[
               Flexible(

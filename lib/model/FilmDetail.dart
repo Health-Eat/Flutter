@@ -10,7 +10,6 @@ Future<FilmDetail> fetchFilmsDetails(String id) async{
   final response = await http.get(url);
   print(url);
   if (response.statusCode == 200) {
-    print(response.body);
     return FilmDetail.fromJson(jsonDecode(response.body));
   }
   else

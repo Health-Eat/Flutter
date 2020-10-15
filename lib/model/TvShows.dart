@@ -9,9 +9,7 @@ import 'package:http/http.dart' as http;
 Future<TvShows> fetchShows() async{
   final url = "https://api.themoviedb.org/3/tv/popular?api_key=62feaff3d2cf094a340f530fbf25bde9&language=en-US&page=1";
   final response = await http.get(url);
-  print(url);
   if (response.statusCode == 200) {
-    print(response.body);
     return TvShows.fromJson(jsonDecode(response.body));
   }
   else
