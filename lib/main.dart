@@ -50,7 +50,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final String title = "blabla";
+  final String title = "AmaFlix";
 
   @override
   void initState() {
@@ -60,9 +60,9 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(44, 55, 63, 0.4),
-      appBar:
-      AppBar(
+      backgroundColor: Colors.white10,
+      appBar: AppBar(
+        backgroundColor: Colors.black,
         title: Text(title),
       ),
       body: Stack(children: <Widget>[
@@ -72,6 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Column(
               children: [
                 ListviewTemplate(title: "Popular Movie", type: "popular"),
+                SizedBox(height: 20),
                 Column(children: [
                   SizedBox(
                       height: 210,
@@ -84,7 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   color: Colors.white)),
                         ),
                         Padding(
-                            padding: EdgeInsets.fromLTRB(0, 25, 0, 5),
+                            padding: EdgeInsets.fromLTRB(0, 35, 0, 5),
                             child: Container(
                               child: FutureBuilder<TvShows>(
                                 future: fetchShows(),
@@ -113,7 +114,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                   },
                                                   child: Container(
                                                     height: 250,
-                                                    width: 200,
+                                                    width: 150,
                                                     decoration:
                                                         new BoxDecoration(
                                                             image:
@@ -135,6 +136,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             ))
                       ]))
                 ]),
+                SizedBox(height: 20),
                 ListviewTemplate(title: "Top Rated Movie", type: "top_rated"),
               ],
             ),

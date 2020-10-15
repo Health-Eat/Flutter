@@ -25,48 +25,48 @@ class ListviewTemplate extends StatelessWidget {
                         color: Colors.white)),
               ),
               Padding(
-                  padding: EdgeInsets.fromLTRB(0, 25, 0, 5),
+                  padding: EdgeInsets.fromLTRB(0, 35, 0, 5),
                   child: Container(
-                        child: FutureBuilder<Film>(
-                          future: fetchFilms(type),
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              return Container(
-                                  child: ListView.builder(
-                                      itemCount: snapshot.data.results.length,
-                                      scrollDirection: Axis.horizontal,
-                                      itemBuilder:
-                                          (BuildContext context, int index) {
-                                        return GestureDetector(
-                                            onTap: () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        Detail(
-                                                            film: snapshot.data.results[index])),
-                                              );
-                                            },
-                                            child: Container(
-                                              height: size,
-                                              width: 200,
-                                              decoration: new BoxDecoration(
-                                                  image: DecorationImage(
-                                                image: NetworkImage(
-                                                    "$baseUrl/${snapshot.data.results[index].posterPath}"),
-                                                fit: BoxFit.fitHeight,
-                                              )),
-                                            ));
-                                      }));
-                            } else if (snapshot.hasError) {
-                              return Text("${snapshot.error}",
-                                  style: TextStyle(
-                                      fontSize: 15, color: Colors.red));
-                            }
-                            return CircularProgressIndicator();
-                          },
-                        ),
-                      ))
+                    child: FutureBuilder<Film>(
+                      future: fetchFilms(type),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return Container(
+                              child: ListView.builder(
+                                  itemCount: snapshot.data.results.length,
+                                  scrollDirection: Axis.horizontal,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => Detail(
+                                                    film: snapshot
+                                                        .data.results[index])),
+                                          );
+                                        },
+                                        child: Container(
+                                          height: size,
+                                          width: 150,
+                                          decoration: new BoxDecoration(
+                                              image: DecorationImage(
+                                            image: NetworkImage(
+                                                "$baseUrl/${snapshot.data.results[index].posterPath}"),
+                                            fit: BoxFit.fitHeight,
+                                          )),
+                                        ));
+                                  }));
+                        } else if (snapshot.hasError) {
+                          return Text("${snapshot.error}",
+                              style:
+                                  TextStyle(fontSize: 15, color: Colors.red));
+                        }
+                        return CircularProgressIndicator();
+                      },
+                    ),
+                  ))
             ]))
       ])
     ]);

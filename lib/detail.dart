@@ -64,219 +64,242 @@ class Detail extends StatelessWidget {
         elevation: 0.0,
       ),
       body: Stack(children: <Widget>[
-        Column(children: [
-          SizedBox(
-              height: 350,
-              child: Stack(children: <Widget>[
-                Container(
-                    width: MediaQuery.of(context).size.width,
-                    decoration: new BoxDecoration(
-                        image: DecorationImage(
-                      image: NetworkImage(
-                          "http://image.tmdb.org/t/p/w1280/${film == null ? show.posterPath : film.posterPath}"),
-                      fit: BoxFit.cover,
-                    ))),
-                Container(
-                  padding: EdgeInsets.all(5.0),
-                  alignment: Alignment.bottomLeft,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomLeft,
-                      colors: <Color>[
-                        Colors.black.withAlpha(0),
-                        Colors.black12,
-                        Colors.black45
-                      ],
+        ListView(
+          padding: EdgeInsets.all(1),
+          children: <Widget>[
+            Column(children: [
+              SizedBox(
+                  height: 350,
+                  child: Stack(children: <Widget>[
+                    Container(
+                        width: MediaQuery.of(context).size.width,
+                        decoration: new BoxDecoration(
+                            image: DecorationImage(
+                          image: NetworkImage(
+                              "http://image.tmdb.org/t/p/w1280/${film == null ? show.posterPath : film.posterPath}"),
+                          fit: BoxFit.cover,
+                        ))),
+                    Container(
+                      padding: EdgeInsets.all(5.0),
+                      alignment: Alignment.bottomLeft,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomLeft,
+                          colors: <Color>[
+                            Colors.black.withAlpha(0),
+                            Colors.black12,
+                            Colors.black
+                          ],
+                        ),
+                      ),
+                      child: Text(
+                        film == null ? show.originalName : film.title,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 25.0,
+                            fontWeight: FontWeight.bold),
+                      ),
                     ),
-                  ),
-                  child: Text(
-                    film == null ? show.originalName : film.title,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 25.0,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ])),
-          Column(children: [
-            Padding(
-              padding: EdgeInsets.fromLTRB(15, 10.0, 0, 0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    "+12 - ",
-                    style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
-                  ),
-                  Text(
-                    " ${film == null ? show.name : film.releaseDate.year.toString()} - ",
-                    style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
-                  ),
-                  IconTheme(
-                    data: IconThemeData(
-                      color: Colors.amber,
-                      size: 15,
-                    ),
-                    child: StarDisplay(value: 3),
-                  ),
-                  Text(
-                    " ${film == null ? show.voteAverage.toString() : film.voteAverage.toString()}",
-                    style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
-                  ),
-                ],
-              ),
-            ),
-            Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  FutureBuilder<List<Genre>>(
-                      future: fetchGenres(
-                          'https://api.themoviedb.org/3/genre/movie/list?api_key=62feaff3d2cf094a340f530fbf25bde9&language=en-US'),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          var names = [];
-
-                          for (Genre genre in snapshot.data) {
-                            /*print("${film.genreIds[0]} --- ${genre.id}");*/
-                            for (var index = 0; index < 3; index++) {
-                              if (film.genreIds[index] == genre.id) {
-                                names.add(genre.name);
-                              }
-                            }
-                          }
-                          return Stack(children: [
-                            Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    FlatButton(
-                                      onPressed: null,
-                                      textColor: Colors.white,
-                                      disabledColor: Colors.white,
-                                      disabledTextColor: Colors.black,
-                                      padding: EdgeInsets.all(2.0),
-                                      child: Text(names[0].toString(),
-                                          style: TextStyle(color: Colors.black)),
-                                    ),
-                                    FlatButton(
-                                      onPressed: null,
-                                      textColor: Colors.white,
-                                      disabledColor: Colors.white,
-                                      disabledTextColor: Colors.black,
-                                      padding: EdgeInsets.all(2.0),
-                                      child: Text(names[1].toString(),
-                                          style: TextStyle(color: Colors.black)),
-                                    ),
-                                    FlatButton(
-                                      onPressed: null,
-                                      textColor: Colors.white,
-                                      disabledColor: Colors.white,
-                                      disabledTextColor: Colors.black,
-                                      padding: EdgeInsets.all(2.0),
-                                      child: Text(names[2].toString(),
-                                          style: TextStyle(color: Colors.black)),
-                                    )
-                                  ],
-                                )
-
-                              ],
-                            )
-                          ]);
-                        }
-                        return Text(
-                          snapshot.error.toString(),
-                          style: TextStyle(color: Colors.red),
-                        );
-                      }),
-                  /* FlatButton(
-                    onPressed: null,
-                    textColor: Colors.white,
-                    disabledColor: Colors.white,
-                    disabledTextColor: Colors.black,
-                    padding: EdgeInsets.all(2.0),
-                    child: Text(
-                      film == null ? show.genreIds[0].toString(): film.genreIds[0].toString(),
-                    ),
-                  ),
-                  FlatButton(
-                    onPressed: null,
-                    textColor: Colors.white,
-                    disabledColor: Colors.white,
-                    disabledTextColor: Colors.black,
-                    padding: EdgeInsets.all(7.0),
-                    child: Text(
-                        film == null ? show.genreIds[0].toString(): film.genreIds[0].toString()
-                    ),
-                  ),
-                  FlatButton(
-                    onPressed: null,
-                    textColor: Colors.white,
-                    disabledColor: Colors.white,
-                    disabledTextColor: Colors.black,
-                    padding: EdgeInsets.all(7.0),
-                    child: Text(
-                        film == null ? show.genreIds[0].toString(): film.genreIds[0].toString()
-                    ),
-                  )*/
-                ]),
-            Row(children: <Widget>[
-              Flexible(
-                child: RichText(
-                  text: TextSpan(
-                    children: <TextSpan>[
-                      TextSpan(
-                          text: 'Cast :',
-                          style: TextStyle(fontWeight: FontWeight.bold)),
-                      TextSpan(
-                          text: film == null ? show.overview : film.overview),
+                  ])),
+              Padding(
+                padding: EdgeInsets.all(10),
+                child: Column(children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        "+12 - ",
+                        style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                      Text(
+                        " ${film == null ? show.name : film.releaseDate.year.toString()} - ",
+                        style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                      IconTheme(
+                        data: IconThemeData(
+                          color: Colors.amber,
+                          size: 15,
+                        ),
+                        child: StarDisplay(value: 3),
+                      ),
+                      Text(
+                        " ${film == null ? show.voteAverage.toString() : film.voteAverage.toString()}",
+                        style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
                     ],
                   ),
-                ),
+                  Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                    FutureBuilder<List<Genre>>(
+                        future: fetchGenres(
+                            'https://api.themoviedb.org/3/genre/movie/list?api_key=62feaff3d2cf094a340f530fbf25bde9&language=en-US'),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            var names = [];
+
+                            for (Genre genre in snapshot.data) {
+                              /*print("${film.genreIds[0]} --- ${genre.id}");*/
+                              for (var index = 0; index < 3; index++) {
+                                if (film.genreIds[index] == genre.id) {
+                                  names.add(genre.name);
+                                }
+                              }
+                            }
+                            return Stack(children: [
+                              Column(
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.all(10),
+                                    child: Row(
+                                      children: <Widget>[
+                                        EtiquetteWidget(names[0].toString()),
+                                        SizedBox(width: 20),
+                                        EtiquetteWidget(names[1].toString()),
+                                        SizedBox(width: 20),
+                                        EtiquetteWidget(names[2].toString()),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ]);
+                          }
+                          return Text(
+                            snapshot.error.toString(),
+                            style: TextStyle(color: Colors.red),
+                          );
+                        }),
+                    /* FlatButton(
+                          onPressed: null,
+                          textColor: Colors.white,
+                          disabledColor: Colors.white,
+                          disabledTextColor: Colors.black,
+                          padding: EdgeInsets.all(2.0),
+                          child: Text(
+                            film == null ? show.genreIds[0].toString(): film.genreIds[0].toString(),
+                          ),
+                        ),
+                        FlatButton(
+                          onPressed: null,
+                          textColor: Colors.white,
+                          disabledColor: Colors.white,
+                          disabledTextColor: Colors.black,
+                          padding: EdgeInsets.all(7.0),
+                          child: Text(
+                              film == null ? show.genreIds[0].toString(): film.genreIds[0].toString()
+                          ),
+                        ),
+                        FlatButton(
+                          onPressed: null,
+                          textColor: Colors.white,
+                          disabledColor: Colors.white,
+                          disabledTextColor: Colors.black,
+                          padding: EdgeInsets.all(7.0),
+                          child: Text(
+                              film == null ? show.genreIds[0].toString(): film.genreIds[0].toString()
+                          ),
+                        )*/
+                  ]),
+                  Row(children: <Widget>[
+                    Flexible(
+                      child: RichText(
+                        textAlign: TextAlign.justify,
+                        text: TextSpan(
+                          children: <TextSpan>[
+                            TextSpan(
+                                text: 'Cast : ',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                            TextSpan(
+                                text: film == null
+                                    ? show.overview
+                                    : film.overview),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ]),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(
+                            left: 10, top: 20, right: 10, bottom: 10),
+                        child: Text("Summary",
+                            textAlign: TextAlign.justify,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20)),
+                      )
+                    ],
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Flexible(
+                        child: RichText(
+                          text: TextSpan(
+                            children: <TextSpan>[
+                              TextSpan(
+                                  text: film == null
+                                      ? show.overview
+                                      : film.overview),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  )
+                ]),
               ),
             ]),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.fromLTRB(10, 20.0, 0, 0),
-                  child: Text("Summary",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20)),
-                )
-              ],
-            ),
-            Row(
-              children: <Widget>[
-                Flexible(
-                  child: RichText(
-                    text: TextSpan(
-                      children: <TextSpan>[
-                        TextSpan(
-                            text: film == null ? show.overview : film.overview),
-                      ],
-                    ),
-                  ),
-                )
-              ],
-            )
-          ]),
-        ]),
+          ],
+        ),
       ]),
+    );
+  }
+}
+
+class EtiquetteWidget extends StatefulWidget {
+  EtiquetteWidget(this.title);
+
+  @override
+  _EtiquetteWidgetState createState() => _EtiquetteWidgetState();
+
+  final String title;
+}
+
+class _EtiquetteWidgetState extends State<EtiquetteWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(5),
+      margin: EdgeInsets.only(top: 10, bottom: 10),
+      decoration: BoxDecoration(
+          color: Colors.white,
+          shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(5.0),
+              topRight: Radius.circular(5.0),
+              topLeft: Radius.circular(5.0),
+              bottomRight: Radius.circular(5.0))),
+      child: Text(
+        widget.title,
+        style: TextStyle(
+          color: Colors.black,
+          fontSize: 20,
+        ),
+      ),
     );
   }
 }
