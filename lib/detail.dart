@@ -155,35 +155,43 @@ class Detail extends StatelessWidget {
                                 names.add(genre.name);
                               }
                             }
-                            print(names);
                           }
                           return Stack(children: [
-                            FlatButton(
-                              onPressed: null,
-                              textColor: Colors.white,
-                              disabledColor: Colors.white,
-                              disabledTextColor: Colors.black,
-                              padding: EdgeInsets.all(2.0),
-                              child: Text(names[0].toString(),
-                                  style: TextStyle(color: Colors.black)),
-                            ),
-                            FlatButton(
-                              onPressed: null,
-                              textColor: Colors.white,
-                              disabledColor: Colors.white,
-                              disabledTextColor: Colors.black,
-                              padding: EdgeInsets.all(2.0),
-                              child: Text(names[1].toString(),
-                                  style: TextStyle(color: Colors.black)),
-                            ),
-                            FlatButton(
-                              onPressed: null,
-                              textColor: Colors.white,
-                              disabledColor: Colors.white,
-                              disabledTextColor: Colors.black,
-                              padding: EdgeInsets.all(2.0),
-                              child: Text(names[2].toString(),
-                                  style: TextStyle(color: Colors.black)),
+                            Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    FlatButton(
+                                      onPressed: null,
+                                      textColor: Colors.white,
+                                      disabledColor: Colors.white,
+                                      disabledTextColor: Colors.black,
+                                      padding: EdgeInsets.all(2.0),
+                                      child: Text(names[0].toString(),
+                                          style: TextStyle(color: Colors.black)),
+                                    ),
+                                    FlatButton(
+                                      onPressed: null,
+                                      textColor: Colors.white,
+                                      disabledColor: Colors.white,
+                                      disabledTextColor: Colors.black,
+                                      padding: EdgeInsets.all(2.0),
+                                      child: Text(names[1].toString(),
+                                          style: TextStyle(color: Colors.black)),
+                                    ),
+                                    FlatButton(
+                                      onPressed: null,
+                                      textColor: Colors.white,
+                                      disabledColor: Colors.white,
+                                      disabledTextColor: Colors.black,
+                                      padding: EdgeInsets.all(2.0),
+                                      child: Text(names[2].toString(),
+                                          style: TextStyle(color: Colors.black)),
+                                    )
+                                  ],
+                                )
+
+                              ],
                             )
                           ]);
                         }
