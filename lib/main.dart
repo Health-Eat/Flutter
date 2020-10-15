@@ -8,7 +8,6 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -66,68 +65,82 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(title),
       ),
       body: Stack(children: <Widget>[
-        Column(
-          children: [
-            ListviewTemplate(title: "Popular Movie", type: "popular"),
-            Column(children: [
-              SizedBox(
-                  height: 210,
-                  child: Stack(children: <Widget>[
-                    Container(
-                      child: Text("Popular TV Show",
-                          style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white)),
-                    ),
-                    Padding(
-                        padding: EdgeInsets.fromLTRB(0, 25, 0, 5),
-                        child: Container(
-                          child: FutureBuilder<TvShows>(
-                            future: fetchShows(),
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData) {
-                                return Container(
+        ListView(
+          padding: EdgeInsets.all(10),
+          children: <Widget>[
+            Column(
+              children: [
+                ListviewTemplate(title: "Popular Movie", type: "popular"),
+                Column(children: [
+                  SizedBox(
+                      height: 210,
+                      child: Stack(children: <Widget>[
+                        Container(
+                          child: Text("Popular TV Show",
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white)),
+                        ),
+                        Padding(
+                            padding: EdgeInsets.fromLTRB(0, 25, 0, 5),
+                            child: Container(
+                              child: FutureBuilder<TvShows>(
+                                future: fetchShows(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasData) {
+                                    return Container(
                                         child: ListView.builder(
-                                            itemCount: snapshot.data.resultsShow.length,
+                                            itemCount: snapshot
+                                                .data.resultsShow.length,
                                             scrollDirection: Axis.horizontal,
-                                            itemBuilder:
-                                                (BuildContext context, int index) {
+                                            itemBuilder: (BuildContext context,
+                                                int index) {
                                               return GestureDetector(
                                                   onTap: () {
-                                                    print(snapshot.data.resultsShow[index].posterPath);
+                                                    print(snapshot
+                                                        .data
+                                                        .resultsShow[index]
+                                                        .posterPath);
                                                     Navigator.push(
                                                       context,
                                                       MaterialPageRoute(
                                                           builder: (context) =>
                                                               Detail(
-                                                                film: null,
-                                                                  show: snapshot.data.resultsShow[index])),
+                                                                  film: null,
+                                                                  show: snapshot
+                                                                          .data
+                                                                          .resultsShow[
+                                                                      index])),
                                                     );
                                                   },
                                                   child: Container(
                                                     height: 250,
                                                     width: 200,
-                                                    decoration: new BoxDecoration(
-                                                        image: DecorationImage(
-                                                          image: NetworkImage(
-                                                              "http://image.tmdb.org/t/p/w500/${snapshot.data.resultsShow[index].posterPath}"),
-                                                          fit: BoxFit.fitHeight,
-                                                        )),
+                                                    decoration:
+                                                        new BoxDecoration(
+                                                            image:
+                                                                DecorationImage(
+                                                      image: NetworkImage(
+                                                          "http://image.tmdb.org/t/p/w500/${snapshot.data.resultsShow[index].posterPath}"),
+                                                      fit: BoxFit.fitHeight,
+                                                    )),
                                                   ));
                                             }));
-                              } else if (snapshot.hasError) {
-                                return Text("${snapshot.error}",
-                                    style: TextStyle(
-                                        fontSize: 15, color: Colors.red));
-                              }
-                              return CircularProgressIndicator();
-                            },
-                          ),
-                        ))
-                  ]))
-            ]),
-            ListviewTemplate(title: "Top Rated Movie", type: "top_rated"),
+                                  } else if (snapshot.hasError) {
+                                    return Text("${snapshot.error}",
+                                        style: TextStyle(
+                                            fontSize: 15, color: Colors.red));
+                                  }
+                                  return CircularProgressIndicator();
+                                },
+                              ),
+                            ))
+                      ]))
+                ]),
+                ListviewTemplate(title: "Top Rated Movie", type: "top_rated"),
+              ],
+            ),
           ],
         )
       ]),
