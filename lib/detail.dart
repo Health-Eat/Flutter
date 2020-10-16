@@ -36,7 +36,6 @@ class Genre {
   }
 }
 
-
 class Detail extends StatelessWidget {
   final Result film;
   final ResultShow show;
@@ -49,6 +48,7 @@ class Detail extends StatelessWidget {
         .map((p) => Genre.fromJson(p))
         .toList();
   }
+
 /*
   Future<List<Cast>> fetchCast(String url) async {
     var response = await http.get(url);
@@ -58,7 +58,6 @@ class Detail extends StatelessWidget {
         .map((p) => Cast.fromJson(p))
         .toList();
   }*/
-
 
   Detail({Key key, this.film, this.show}) : super(key: key);
 
@@ -159,10 +158,12 @@ class Detail extends StatelessWidget {
                           if (snapshot.hasData) {
                             List<EtiquetteWidget> names = [];
                             var genreIds =
-                                film == null ?show.genreIds :  film.genreIds ;
+                                film == null ? show.genreIds : film.genreIds;
                             if (genreIds.length > 0) {
                               for (Genre genre in snapshot.data) {
-                                for (var index = 0; index < genreIds.length; index++) {
+                                for (var index = 0;
+                                    index < genreIds.length;
+                                    index++) {
                                   if (genreIds[index] == genre.id) {
                                     names.add(new EtiquetteWidget(genre.name));
                                   }
@@ -176,10 +177,7 @@ class Detail extends StatelessWidget {
                                     padding: EdgeInsets.all(10),
                                     child: Row(
                                       children: <Widget>[
-                                        SizedBox(width: 20),
-                                        Row(
-                                          children: names
-                                        ),
+                                        Row(children: names),
                                       ],
                                     ),
                                   ),
@@ -194,16 +192,13 @@ class Detail extends StatelessWidget {
                         }),
                   ]),
                   FutureBuilder<Cast>(
-                      future: fetchCast(
-                          '${film == null ? show.id : film.id}'),
+                      future: fetchCast('${film == null ? show.id : film.id}'),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                        print(snapshot.data.cast);
-                        //print(film);
-                        var castName = [];
-                        for(var i in snapshot.data.cast){
-                          castName.add(i.name);
-                        }
+                          var castName = [];
+                          for (var i in snapshot.data.cast) {
+                            castName.add(i.name);
+                          }
                           return Stack(children: [
                             Column(
                               children: [
@@ -215,17 +210,18 @@ class Detail extends StatelessWidget {
                                         children: <TextSpan>[
                                           TextSpan(
                                               text: 'Cast : ',
-                                              style: TextStyle(fontWeight: FontWeight.bold)),
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold)),
                                           TextSpan(
+                                              style: TextStyle(
+                                                  fontStyle: FontStyle.italic),
                                               text: castName.join(", ")),
                                         ],
                                       ),
                                     ),
                                   ),
-                                ]
-
-                                )],
-
+                                ])
+                              ],
                             )
                           ]);
                         }
@@ -234,7 +230,6 @@ class Detail extends StatelessWidget {
                           style: TextStyle(color: Colors.red),
                         );
                       }),
-
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -291,7 +286,7 @@ class _EtiquetteWidgetState extends State<EtiquetteWidget> {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(5),
-      margin: EdgeInsets.only(top: 10, bottom: 10),
+      margin: EdgeInsets.only(top: 10, bottom: 10, right: 10, left: 10),
       decoration: BoxDecoration(
           color: Colors.white,
           shape: BoxShape.rectangle,

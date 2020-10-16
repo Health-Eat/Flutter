@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/listviewTemplate.dart';
 import 'package:flutter_app/model/TvShows.dart';
 import 'detail.dart';
+import 'login.dart';
 
 void main() {
   runApp(MyApp());
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: ConnexionPage(title: 'Flutter Demo Home Page'),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -51,7 +52,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final String title = "AmaFlix";
 
   @override
   void initState() {
@@ -63,8 +63,17 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       backgroundColor: Colors.white10,
       appBar: AppBar(
-        backgroundColor: Colors.black,
-        title: Text(title),
+          backgroundColor: Colors.black,
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Image.asset(
+                "assets/images/amaflix.png",
+                fit: BoxFit.contain,
+                height: 20,
+              )
+            ]
+          )
       ),
       body: Stack(children: <Widget>[
         ListView(

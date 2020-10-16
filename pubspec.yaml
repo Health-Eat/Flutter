@@ -23,3 +23,5 @@ flutter:
  uses-material-design: true
  assets:
    - assets/images/fond.png
+   - assets/images/login.png
+   - assets/images/amaflix.png
