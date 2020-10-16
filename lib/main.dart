@@ -52,7 +52,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final String title = "AmaFlix";
 
   @override
   void initState() {
@@ -64,8 +63,17 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       backgroundColor: Colors.white10,
       appBar: AppBar(
-        backgroundColor: Colors.black,
-        title: Text(title),
+          backgroundColor: Colors.black,
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Image.asset(
+                "assets/images/amaflix.png",
+                fit: BoxFit.contain,
+                height: 20,
+              )
+            ]
+          )
       ),
       body: Stack(children: <Widget>[
         ListView(
