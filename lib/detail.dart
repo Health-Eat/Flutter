@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/model/Cast.dart';
 import 'package:flutter_app/model/Film.dart';
 import 'package:flutter_app/model/TvShows.dart';
 import 'dart:convert' as convert;
@@ -35,6 +36,7 @@ class Genre {
   }
 }
 
+
 class Detail extends StatelessWidget {
   final Result film;
   final ResultShow show;
@@ -47,6 +49,15 @@ class Detail extends StatelessWidget {
         .map((p) => Genre.fromJson(p))
         .toList();
   }
+/*
+  Future<List<Cast>> fetchCast(String url) async {
+    var response = await http.get(url);
+    var jsonResponse = convert.jsonDecode(response.body);
+
+    return (jsonResponse['cast'] as List)
+        .map((p) => Cast.fromJson(p))
+        .toList();
+  }*/
 
   Detail({Key key, this.film, this.show}) : super(key: key);
 
@@ -180,24 +191,48 @@ class Detail extends StatelessWidget {
                           );
                         }),
                   ]),
-                  Row(children: <Widget>[
-                    Flexible(
-                      child: RichText(
-                        textAlign: TextAlign.justify,
-                        text: TextSpan(
-                          children: <TextSpan>[
-                            TextSpan(
-                                text: 'Cast : ',
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                            TextSpan(
-                                text: film == null
-                                    ? show.overview
-                                    : film.overview),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ]),
+                  FutureBuilder<Cast>(
+                      future: fetchCast(
+                          '${film == null ? show.id : film.id}'),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                        print(snapshot.data.cast);
+                        //print(film);
+                        var castName = [];
+                        for(var i in snapshot.data.cast){
+                          castName.add(i.name);
+                        }
+                          return Stack(children: [
+                            Column(
+                              children: [
+                                Row(children: <Widget>[
+                                  Flexible(
+                                    child: RichText(
+                                      textAlign: TextAlign.justify,
+                                      text: TextSpan(
+                                        children: <TextSpan>[
+                                          TextSpan(
+                                              text: 'Cast : ',
+                                              style: TextStyle(fontWeight: FontWeight.bold)),
+                                          TextSpan(
+                                              text: castName.join(", ")),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ]
+
+                                )],
+
+                            )
+                          ]);
+                        }
+                        return Text(
+                          snapshot.error.toString(),
+                          style: TextStyle(color: Colors.red),
+                        );
+                      }),
+
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.start,
