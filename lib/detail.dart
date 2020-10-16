@@ -48,7 +48,6 @@ class Detail extends StatelessWidget {
         .toList();
   }
 
-
   Detail({Key key, this.film, this.show}) : super(key: key);
 
   @override
@@ -148,10 +147,12 @@ class Detail extends StatelessWidget {
                           if (snapshot.hasData) {
                             List<EtiquetteWidget> names = [];
                             var genreIds =
-                                film == null ?show.genreIds :  film.genreIds ;
+                                film == null ? show.genreIds : film.genreIds;
                             if (genreIds.length > 0) {
                               for (Genre genre in snapshot.data) {
-                                for (var index = 0; index < genreIds.length; index++) {
+                                for (var index = 0;
+                                    index < genreIds.length;
+                                    index++) {
                                   if (genreIds[index] == genre.id) {
                                     names.add(new EtiquetteWidget(genre.name));
                                   }
@@ -165,10 +166,7 @@ class Detail extends StatelessWidget {
                                     padding: EdgeInsets.all(10),
                                     child: Row(
                                       children: <Widget>[
-                                        SizedBox(width: 20),
-                                        Row(
-                                          children: names
-                                        ),
+                                        Row(children: names),
                                       ],
                                     ),
                                   ),
@@ -256,7 +254,7 @@ class _EtiquetteWidgetState extends State<EtiquetteWidget> {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(5),
-      margin: EdgeInsets.only(top: 10, bottom: 10),
+      margin: EdgeInsets.only(top: 10, bottom: 10, right: 10, left: 10),
       decoration: BoxDecoration(
           color: Colors.white,
           shape: BoxShape.rectangle,
