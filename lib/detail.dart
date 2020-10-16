@@ -36,7 +36,6 @@ class Genre {
   }
 }
 
-
 class Detail extends StatelessWidget {
   final Result film;
   final ResultShow show;
@@ -49,6 +48,7 @@ class Detail extends StatelessWidget {
         .map((p) => Genre.fromJson(p))
         .toList();
   }
+
 /*
   Future<List<Cast>> fetchCast(String url) async {
     var response = await http.get(url);
@@ -192,16 +192,13 @@ class Detail extends StatelessWidget {
                         }),
                   ]),
                   FutureBuilder<Cast>(
-                      future: fetchCast(
-                          '${film == null ? show.id : film.id}'),
+                      future: fetchCast('${film == null ? show.id : film.id}'),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                        print(snapshot.data.cast);
-                        //print(film);
-                        var castName = [];
-                        for(var i in snapshot.data.cast){
-                          castName.add(i.name);
-                        }
+                          var castName = [];
+                          for (var i in snapshot.data.cast) {
+                            castName.add(i.name);
+                          }
                           return Stack(children: [
                             Column(
                               children: [
@@ -213,17 +210,18 @@ class Detail extends StatelessWidget {
                                         children: <TextSpan>[
                                           TextSpan(
                                               text: 'Cast : ',
-                                              style: TextStyle(fontWeight: FontWeight.bold)),
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold)),
                                           TextSpan(
+                                              style: TextStyle(
+                                                  fontStyle: FontStyle.italic),
                                               text: castName.join(", ")),
                                         ],
                                       ),
                                     ),
                                   ),
-                                ]
-
-                                )],
-
+                                ])
+                              ],
                             )
                           ]);
                         }
@@ -232,7 +230,6 @@ class Detail extends StatelessWidget {
                           style: TextStyle(color: Colors.red),
                         );
                       }),
-
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.start,
