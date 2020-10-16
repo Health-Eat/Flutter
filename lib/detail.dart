@@ -48,6 +48,7 @@ class Detail extends StatelessWidget {
         .toList();
   }
 
+
   Detail({Key key, this.film, this.show}) : super(key: key);
 
   @override
@@ -145,13 +146,15 @@ class Detail extends StatelessWidget {
                             'https://api.themoviedb.org/3/genre/movie/list?api_key=62feaff3d2cf094a340f530fbf25bde9&language=en-US'),
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
-                            var names = [];
-
-                            for (Genre genre in snapshot.data) {
-                              /*print("${film.genreIds[0]} --- ${genre.id}");*/
-                              for (var index = 0; index < 3; index++) {
-                                if (film.genreIds[index] == genre.id) {
-                                  names.add(genre.name);
+                            List<EtiquetteWidget> names = [];
+                            var genreIds =
+                                film == null ?show.genreIds :  film.genreIds ;
+                            if (genreIds.length > 0) {
+                              for (Genre genre in snapshot.data) {
+                                for (var index = 0; index < genreIds.length; index++) {
+                                  if (genreIds[index] == genre.id) {
+                                    names.add(new EtiquetteWidget(genre.name));
+                                  }
                                 }
                               }
                             }
@@ -162,11 +165,10 @@ class Detail extends StatelessWidget {
                                     padding: EdgeInsets.all(10),
                                     child: Row(
                                       children: <Widget>[
-                                        EtiquetteWidget(names[0].toString()),
                                         SizedBox(width: 20),
-                                        EtiquetteWidget(names[1].toString()),
-                                        SizedBox(width: 20),
-                                        EtiquetteWidget(names[2].toString()),
+                                        Row(
+                                          children: names
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -179,36 +181,6 @@ class Detail extends StatelessWidget {
                             style: TextStyle(color: Colors.red),
                           );
                         }),
-                    /* FlatButton(
-                          onPressed: null,
-                          textColor: Colors.white,
-                          disabledColor: Colors.white,
-                          disabledTextColor: Colors.black,
-                          padding: EdgeInsets.all(2.0),
-                          child: Text(
-                            film == null ? show.genreIds[0].toString(): film.genreIds[0].toString(),
-                          ),
-                        ),
-                        FlatButton(
-                          onPressed: null,
-                          textColor: Colors.white,
-                          disabledColor: Colors.white,
-                          disabledTextColor: Colors.black,
-                          padding: EdgeInsets.all(7.0),
-                          child: Text(
-                              film == null ? show.genreIds[0].toString(): film.genreIds[0].toString()
-                          ),
-                        ),
-                        FlatButton(
-                          onPressed: null,
-                          textColor: Colors.white,
-                          disabledColor: Colors.white,
-                          disabledTextColor: Colors.black,
-                          padding: EdgeInsets.all(7.0),
-                          child: Text(
-                              film == null ? show.genreIds[0].toString(): film.genreIds[0].toString()
-                          ),
-                        )*/
                   ]),
                   Row(children: <Widget>[
                     Flexible(
