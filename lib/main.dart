@@ -3,8 +3,11 @@ import 'package:flutter_app/listviewTemplate.dart';
 import 'package:flutter_app/model/TvShows.dart';
 import 'detail.dart';
 import 'login.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+void main() async  {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -52,7 +55,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   @override
   void initState() {
     super.initState();
@@ -63,6 +65,9 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       backgroundColor: Colors.white10,
       appBar: AppBar(
+        leading: IconButton(
+        icon: Icon(Icons.home, color: Colors.white)
+        ),
           backgroundColor: Colors.black,
           title: Row(
             mainAxisAlignment: MainAxisAlignment.start,
