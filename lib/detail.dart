@@ -49,16 +49,6 @@ class Detail extends StatelessWidget {
         .toList();
   }
 
-/*
-  Future<List<Cast>> fetchCast(String url) async {
-    var response = await http.get(url);
-    var jsonResponse = convert.jsonDecode(response.body);
-
-    return (jsonResponse['cast'] as List)
-        .map((p) => Cast.fromJson(p))
-        .toList();
-  }*/
-
   Detail({Key key, this.film, this.show}) : super(key: key);
 
   @override
