@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_app/listviewTemplate.dart';
-import 'package:flutter_app/model/TvShows.dart';
-import 'detail.dart';
-import 'login.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_app/model/TvShows.dart';
+import 'package:flutter_app/template/listviewTemplate.dart';
+import 'screen/detail.dart';
+import 'authentification/login.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 
 void main() async  {
@@ -21,33 +21,14 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: AnimatedSplashScreen(
+        //splash: Image.asset('assets/images/animation.gif'),
         splash: Image.network(
             "https://media1.tenor.com/images/1fe36998add400322db6aae8612d3fcf/tenor.gif?itemid=15122473"),
         nextScreen: ConnexionPage(title: 'Flutter Demo Home Page'),
-        splashTransition: SplashTransition.fadeTransition,
+        //splashTransition: SplashTransition.sizeTransition,
         backgroundColor: Colors.black,
         splashIconSize: 500,
       ),
-    );
-  }
-}
-
-class StarDisplay extends StatelessWidget {
-  final int value;
-
-  const StarDisplay({Key key, this.value = 0})
-      : assert(value != null),
-        super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: List.generate(1, (index) {
-        return Icon(
-          index < value ? Icons.star : Icons.star_border,
-        );
-      }),
     );
   }
 }
