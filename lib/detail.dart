@@ -160,20 +160,22 @@ class Detail extends StatelessWidget {
                                 }
                               }
                             }
-                            return Stack(children: [
-                              Column(
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.all(10),
-                                    child: Row(
-                                      children: <Widget>[
-                                        Row(children: names),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              )
-                            ]);
+                            return Container(
+                              width: MediaQuery.of(context).size.width - 22,
+                              height: 100,
+                              child: ListView(
+                                  scrollDirection: Axis.horizontal,
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: EdgeInsets.all(10),
+                                      child: Row(
+                                        children: <Widget>[
+                                          Row(children: names),
+                                        ],
+                                      ),
+                                    )
+                                  ]),
+                            );
                           }
                           return Text(
                             snapshot.error.toString(),
