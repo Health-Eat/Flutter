@@ -150,8 +150,6 @@ class Detail extends StatelessWidget {
                             double etiquetteHeight;
                             var genreIds =
                                 film == null ? show.genreIds : film.genreIds;
-                            etiquetteHeight =
-                                genreIds.any((element) => true) ? 100 : 0;
                             if (genreIds.length > 0) {
                               for (Genre genre in snapshot.data) {
                                 for (var index = 0;
@@ -160,6 +158,8 @@ class Detail extends StatelessWidget {
                                   if (genreIds[index] == genre.id) {
                                     names.add(new EtiquetteWidget(genre.name));
                                   }
+                                  etiquetteHeight =
+                                  names.any((element) => true) ? 100 : 0;
                                 }
                               }
                             }
