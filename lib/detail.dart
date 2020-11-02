@@ -147,8 +147,11 @@ class Detail extends StatelessWidget {
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
                             List<EtiquetteWidget> names = [];
+                            double etiquetteHeight;
                             var genreIds =
                                 film == null ? show.genreIds : film.genreIds;
+                            etiquetteHeight =
+                                genreIds.any((element) => true) ? 100 : 0;
                             if (genreIds.length > 0) {
                               for (Genre genre in snapshot.data) {
                                 for (var index = 0;
@@ -162,7 +165,7 @@ class Detail extends StatelessWidget {
                             }
                             return Container(
                               width: MediaQuery.of(context).size.width - 22,
-                              height: 100,
+                              height: etiquetteHeight,
                               child: ListView(
                                   scrollDirection: Axis.horizontal,
                                   children: <Widget>[
