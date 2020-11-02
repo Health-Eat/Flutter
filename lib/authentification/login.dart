@@ -19,7 +19,8 @@ class _ConnexionPageState extends State<ConnexionPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  bool _success= false;
+  bool _success = false;
+  String errorMessage;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
@@ -32,24 +33,29 @@ class _ConnexionPageState extends State<ConnexionPage> {
   }
 
   void _register() async {
-    if (_auth.currentUser == null) {
-      try {
-        final FirebaseUser user = (await _auth.createUserWithEmailAndPassword(
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: _emailController.text,
-          password: _passwordController.text,
-        ))
-            .user;
-        _success = true;
-      } catch (signUpError) {
-        print(signUpError);
-        _success = false;
-      }
-    } else {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => MyHomePage()),
+          password: _passwordController.text
       );
+      if(userCredential.user != null) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => MyHomePage()),
+        );
+      } else {
+        errorMessage = "Can't connect to firebase";
+      }
+
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        errorMessage = 'The password provided is too weak.';
+      } else if (e.code == 'email-already-in-use') {
+        errorMessage = 'The account already exists for that email.';
+      }
+    } catch (e) {
+      errorMessage = e.toString();
     }
   }
 
@@ -116,16 +122,9 @@ class _ConnexionPageState extends State<ConnexionPage> {
                         } else {
                           _register();
                           print(_success);
-                          if (_success) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => MyHomePage()),
-                            );
-                          } else {
+                          if (!_success) {
                             _scaffoldKey.currentState.showSnackBar(SnackBar(
-                                content: Text(
-                                    'Oups ! Une erreur est survenue veuillez contacter l\'administrateur')));
+                                content: Text(errorMessage)));
                           }
                         }
                       },

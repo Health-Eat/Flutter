@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/model/Film.dart';
+import 'package:flutter_app/model/film.dart';
 import '../screen/detail.dart';
 
 class ListviewTemplate extends StatelessWidget {

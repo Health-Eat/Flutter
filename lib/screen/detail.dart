@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/model/Cast.dart';
-import 'package:flutter_app/model/Film.dart';
-import 'package:flutter_app/model/TvShows.dart';
+import 'package:flutter_app/model/cast.dart';
+import 'package:flutter_app/model/film.dart';
+import 'package:flutter_app/model/tv_show.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 

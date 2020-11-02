@@ -1,7 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/model/TvShows.dart';
-import 'package:flutter_app/template/listviewTemplate.dart';
+import 'package:flutter_app/model/tv_show.dart';
+import 'package:flutter_app/template/list_view_template.dart';
 import 'screen/detail.dart';
 import 'authentification/login.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
@@ -16,6 +17,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -43,6 +45,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   @override
   void initState() {
     super.initState();
@@ -52,7 +55,24 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white10,
+
       appBar: AppBar(
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.exit_to_app_rounded,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                _auth.signOut();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ConnexionPage()),
+                );
+              },
+            )
+          ],
         leading: IconButton(
         icon: Icon(Icons.home, color: Colors.white)
         ),
@@ -64,6 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
               height: 20,
             )
           ])),
+
       body: Stack(children: <Widget>[
         ListView(
           padding: EdgeInsets.all(10),
