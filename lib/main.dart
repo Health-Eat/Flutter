@@ -4,6 +4,7 @@ import 'package:flutter_app/model/TvShows.dart';
 import 'detail.dart';
 import 'login.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:animated_splash_screen/animated_splash_screen.dart';
 
 void main() async  {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,8 +20,14 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: ConnexionPage(title: 'Flutter Demo Home Page'),
-      debugShowCheckedModeBanner: false,
+      home: AnimatedSplashScreen(
+        splash: Image.network(
+            "https://media1.tenor.com/images/1fe36998add400322db6aae8612d3fcf/tenor.gif?itemid=15122473"),
+        nextScreen: ConnexionPage(title: 'Flutter Demo Home Page'),
+        splashTransition: SplashTransition.fadeTransition,
+        backgroundColor: Colors.black,
+        splashIconSize: 500,
+      ),
     );
   }
 }
@@ -69,17 +76,13 @@ class _MyHomePageState extends State<MyHomePage> {
         icon: Icon(Icons.home, color: Colors.white)
         ),
           backgroundColor: Colors.black,
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Image.asset(
-                "assets/images/amaflix.png",
-                fit: BoxFit.contain,
-                height: 20,
-              )
-            ]
-          )
-      ),
+          title: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+            Image.asset(
+              "assets/images/amaflix.png",
+              fit: BoxFit.contain,
+              height: 20,
+            )
+          ])),
       body: Stack(children: <Widget>[
         ListView(
           padding: EdgeInsets.all(10),
