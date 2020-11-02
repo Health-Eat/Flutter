@@ -19,8 +19,7 @@ class _ConnexionPageState extends State<ConnexionPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  bool _success;
-  String _userEmail;
+  bool _success= false;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
@@ -33,35 +32,24 @@ class _ConnexionPageState extends State<ConnexionPage> {
   }
 
   void _register() async {
-    try {
-      final FirebaseUser user = (await
-      _auth.createUserWithEmailAndPassword(
-        email: _emailController.text,
-        password: _passwordController.text,
-      )
-      ).user;
-      if (user != null) {
-        setState(() {
-          _success = true;
-          _userEmail = user.email;
-        });
-      } else {
-        setState(() {
-          _success = true;
-
-        });
+    if (_auth.currentUser == null) {
+      try {
+        final FirebaseUser user = (await _auth.createUserWithEmailAndPassword(
+          email: _emailController.text,
+          password: _passwordController.text,
+        ))
+            .user;
+        _success = true;
+      } catch (signUpError) {
+        print(signUpError);
+        _success = false;
       }
-    } catch(signUpError) {
-      if(signUpError is PlatformException) {
-        if(signUpError.code == 'ERROR_EMAIL_ALREADY_IN_USE') {
-          final FirebaseUser user = (await
-          _auth.signInWithEmailAndPassword(
-            email: _emailController.text,
-            password: _passwordController.text,
-          )
-          ).user;
-        }
-      }
+    } else {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => MyHomePage()),
+      );
     }
   }
 
@@ -112,23 +100,33 @@ class _ConnexionPageState extends State<ConnexionPage> {
               padding: EdgeInsets.all(20),
               child: Column(
                 children: <Widget>[
-                  TextBoxWidget("Username", "Error in the username", _emailController, false),
+                  TextBoxWidget("Username", "Error in the username",
+                      _emailController, false),
                   SizedBox(height: 20),
-                  TextBoxWidget("Password", "Error in the password", _passwordController, true),
+                  TextBoxWidget("Password", "Error in the password",
+                      _passwordController, true),
                   SizedBox(height: 20),
                   RaisedButton(
                       highlightColor: Colors.red,
                       onPressed: () {
                         if (!_formKey.currentState.validate()) {
-                          _scaffoldKey.currentState.showSnackBar(
-                              SnackBar(content: Text('Join the Films list is impossible without correct identifiers')));
-                        }
-                        else{
+                          _scaffoldKey.currentState.showSnackBar(SnackBar(
+                              content: Text(
+                                  'Join the Films list is impossible without correct identifiers')));
+                        } else {
                           _register();
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => MyHomePage()),
-                          );
+                          print(_success);
+                          if (_success) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MyHomePage()),
+                            );
+                          } else {
+                            _scaffoldKey.currentState.showSnackBar(SnackBar(
+                                content: Text(
+                                    'Oups ! Une erreur est survenue veuillez contacter l\'administrateur')));
+                          }
                         }
                       },
                       child: Text("Login"))
@@ -143,7 +141,8 @@ class _ConnexionPageState extends State<ConnexionPage> {
 }
 
 class TextBoxWidget extends StatefulWidget {
-  TextBoxWidget(this.hintText, this.errorText, this._controller, this.isPasswordField);
+  TextBoxWidget(
+      this.hintText, this.errorText, this._controller, this.isPasswordField);
 
   @override
   _TextBoxWidgetState createState() => _TextBoxWidgetState();
@@ -178,8 +177,10 @@ class _TextBoxWidgetState extends State<TextBoxWidget> {
         validator: (value) {
           if (value.isEmpty) {
             return widget.errorText;
-          } else if(!widget.isPasswordField) {
-            return EmailValidator.validate(value) ? null : "Please enter a valid email";
+          } else if (!widget.isPasswordField) {
+            return EmailValidator.validate(value)
+                ? null
+                : "Please enter a valid email";
           }
           return null;
         },
